@@ -1,0 +1,72 @@
+import csv
+import os
+
+# Function to add an expense to the tracker
+def add_expense(date, category, amount, description):
+    with open('expenses.csv', 'a', newline='') as csvfile:
+        fieldnames = ['Date', 'Category', 'Amount', 'Description']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # Check if the file is empty and write headers if needed
+        if os.stat('expenses.csv').st_size == 0:
+            writer.writeheader()
+
+        # Write the new expense entry
+        writer.writerow({'Date': date, 'Category': category, 'Amount': amount, 'Description': description})
+
+        print("\nExpense added successfully!\n")
+
+# Function to view all expenses
+def view_expenses():
+    try:
+        with open('expenses.csv', 'r') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+            # Check if the file is empty
+            if os.stat('expenses.csv').st_size == 0:
+                print("\nNo expenses recorded yet.\n")
+                return
+
+            # Print the header
+            print("\nExpense Tracker:")
+            print("{:<15} {:<15} {:<10} {:<20}".format('Date', 'Category', 'Amount', 'Description'))
+            print("-" * 60)
+
+            # Print each expense entry
+            for row in reader:
+                print("{:<15} {:<15} {:<10} {:<20}".format(row['Date'], row['Category'], row['Amount'], row['Description']))
+            
+            print()
+    except FileNotFoundError:
+        print("\nNo expenses recorded yet.\n")
+
+# Main function
+def main():
+    while True:
+        print("Expense Tracker Menu:")
+        print("1. Add Expense")
+        print("2. View Expenses")
+        print("3. Exit")
+
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == '1':
+            date = input("Enter the date (YYYY-MM-DD): ")
+            category = input("Enter the category: ")
+            amount = input("Enter the amount: ")
+            description = input("Enter a description: ")
+
+            add_expense(date, category, amount, description)
+
+        elif choice == '2':
+            view_expenses()
+
+        elif choice == '3':
+            print("Exiting Expense Tracker. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main()
