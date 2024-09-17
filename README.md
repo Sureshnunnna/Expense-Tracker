@@ -72,5 +72,3 @@ The CSV file will be created in the same directory as the script if it does not 
 ![image](https://github.com/Sureshnunnna/Expense-Tracker/assets/107661714/6322f7fa-bff2-48eb-aa97-f18ea1c52587)
 
 
-![logo192](https://github.com/user-attachments/assets/23057a6e-9710-43f2-8780-51ae22229589)
-
