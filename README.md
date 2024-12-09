@@ -68,7 +68,8 @@ Notes
 Ensure that the script has write permissions to create and modify the expenses.csv file in the directory where it is run.
 The CSV file will be created in the same directory as the script if it does not already exist.
 
+![image](https://github.com/user-attachments/assets/af013941-20a3-44bc-92b4-81081b6e8255)
+![image](https://github.com/user-attachments/assets/06e613b4-a4ae-4c05-8793-64dc97fee940)
 
-![image](https://github.com/Sureshnunnna/Expense-Tracker/assets/107661714/6322f7fa-bff2-48eb-aa97-f18ea1c52587)
 
 
