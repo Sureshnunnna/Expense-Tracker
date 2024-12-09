@@ -68,6 +68,106 @@ Notes
 Ensure that the script has write permissions to create and modify the expenses.csv file in the directory where it is run.
 The CSV file will be created in the same directory as the script if it does not already exist.
 
+
+
+import csv
+import os
+from datetime import datetime
+
+# Function to validate date format
+def validate_date(date_string):
+    try:
+        datetime.strptime(date_string, '%Y-%m-%d')
+        return True
+    except ValueError:
+        return False
+
+# Function to validate amount input
+def validate_amount(amount_string):
+    try:
+        amount = float(amount_string)
+        return amount >= 0  # Ensure amount is non-negative
+    except ValueError:
+        return False
+
+# Function to add an expense to the tracker
+def add_expense(date, category, amount, description):
+    with open('expenses.csv', 'a', newline='') as csvfile:
+        fieldnames = ['Date', 'Category', 'Amount', 'Description']
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+        # Check if the file is empty and write headers if needed
+        if os.stat('expenses.csv').st_size == 0:
+            writer.writeheader()
+
+        # Write the new expense entry
+        writer.writerow({'Date': date, 'Category': category, 'Amount': amount, 'Description': description})
+        print("\nExpense added successfully!\n")
+
+# Function to view all expenses
+def view_expenses():
+    try:
+        with open('expenses.csv', 'r') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+            # Check if the file is empty
+            if os.stat('expenses.csv').st_size == 0:
+                print("\nNo expenses recorded yet.\n")
+                return
+
+            # Print the header
+            print("\nExpense Tracker:")
+            print("{:<15} {:<15} {:<10} {:<20}".format('Date', 'Category', 'Amount', 'Description'))
+            print("-" * 60)
+
+            # Print each expense entry
+            for row in reader:
+                print("{:<15} {:<15} ${:<9} {:<20}".format(row['Date'], row['Category'], row['Amount'], row['Description']))
+            
+            print()
+    except FileNotFoundError:
+        print("\nNo expenses recorded yet.\n")
+
+# Main function
+def main():
+    while True:
+        print("Expense Tracker Menu:")
+        print("1. Add Expense")
+        print("2. View Expenses")
+        print("3. Exit")
+
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == '1':
+            date = input("Enter the date (YYYY-MM-DD): ")
+            if not validate_date(date):
+                print("Invalid date format. Please use YYYY-MM-DD.")
+                continue
+
+            category = input("Enter the category: ")
+            amount = input("Enter the amount: ")
+            if not validate_amount(amount):
+                print("Invalid amount. Please enter a non-negative number.")
+                continue
+
+            description = input("Enter a description: ")
+            add_expense(date, category, float(amount), description)
+
+        elif choice == '2':
+            view_expenses()
+
+        elif choice == '3':
+            print("Exiting Expense Tracker. Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please enter 1, 2, or 3.")
+
+if __name__ == "__main__":
+    main()
+
+    
+
 ![image](https://github.com/user-attachments/assets/af013941-20a3-44bc-92b4-81081b6e8255)
 ![image](https://github.com/user-attachments/assets/06e613b4-a4ae-4c05-8793-64dc97fee940)
 
